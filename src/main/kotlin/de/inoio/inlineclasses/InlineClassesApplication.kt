@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -28,15 +27,11 @@ value class Age(
     }
 }
 
-interface JavaInteger {
-    val value: Integer
-}
-
 // https://github.com/spring-projects/spring-data-commons/issues/2868
 @JvmInline
 value class PersonId(
-    override val value: Integer,
-) : JavaInteger
+    val value: Integer,
+)
 
 @Table
 data class Person(
@@ -53,9 +48,6 @@ interface PersonRepository : CrudRepository<Person, PersonId>
 class PersonController(
     private val personRepositry: PersonRepository,
 ) {
-    @DeleteMapping("/persons")
-    fun deletePersons() = personRepositry.deleteAll()
-
     @GetMapping("/persons", produces = ["application/json"])
     fun getPersons(): List<Person> = personRepositry.findAll().toList()
 

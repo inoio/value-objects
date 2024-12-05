@@ -2,18 +2,23 @@ package de.inoio.valueobjects
 
 import com.fasterxml.jackson.annotation.JsonValue
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
+@EnableConfigurationProperties
+@ConfigurationPropertiesScan
+@EntityScan(basePackages = ["de.inoio.valueobjects"])
 class ValueObjectsApplication
 
 fun main(args: Array<String>) {
@@ -47,9 +52,6 @@ interface PersonRepository : CrudRepository<Person, PersonId>
 class PersonController(
     private val personRepositry: PersonRepository,
 ) {
-    @DeleteMapping("/persons")
-    fun deletePersons() = personRepositry.deleteAll()
-
     @GetMapping("/persons", produces = ["application/json"])
     fun getPersons(): List<Person> = personRepositry.findAll().toList()
 
