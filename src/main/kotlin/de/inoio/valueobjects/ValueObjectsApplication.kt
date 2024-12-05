@@ -26,8 +26,8 @@ fun main(args: Array<String>) {
 }
 
 data class Age(
-    @JsonValue override val value: Int,
-) : IntValueObject() {
+    @JsonValue override val value: Integer,
+) : IntegerValueObject() {
     init {
         require(value >= 18) { "Age must be at least 18" }
     }
@@ -37,8 +37,14 @@ data class PersonId(
     @JsonValue override val value: Integer,
 ) : IntegerValueObject()
 
+abstract class ValueObject<T> {
+    abstract val value: T
+
+    override fun toString(): String = value.toString()
+}
+
 @Table
-data class Person(
+data class PersonId(
     @Id
     val id: Int?,
     val name: String,

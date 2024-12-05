@@ -14,10 +14,15 @@ class DataJdbcConfiguration : AbstractJdbcConfiguration() {
         )
 }
 
+// spring-data needs Integer instead of Int...
+abstract class IntegerValueObject : ValueObject<Integer>()
+
 @WritingConverter
 class IntegerValueObjectConverter : Converter<IntegerValueObject, Integer> {
     override fun convert(source: IntegerValueObject): Integer = source.value
 }
+
+abstract class IntValueObject : ValueObject<Int>()
 
 @WritingConverter
 class IntValueObjectConverter : Converter<IntValueObject, Int> {
