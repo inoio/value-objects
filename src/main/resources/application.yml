@@ -1,0 +1,6 @@
+spring:
+  application.name: ValueObjects
+#  datasource:
+#    url: jdbc:postgresql://localhost:5672/mdc?currentSchema=public
+#    username: mdc
+#    password: mdc
