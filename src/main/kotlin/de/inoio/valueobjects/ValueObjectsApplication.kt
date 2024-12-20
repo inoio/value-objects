@@ -2,9 +2,6 @@ package de.inoio.valueobjects
 
 import com.fasterxml.jackson.annotation.JsonValue
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
@@ -16,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
-@EnableConfigurationProperties
-@ConfigurationPropertiesScan
-@EntityScan(basePackages = ["de.inoio.valueobjects"])
 class ValueObjectsApplication
 
 fun main(args: Array<String>) {
@@ -37,16 +31,10 @@ data class PersonId(
     @JsonValue override val value: Integer,
 ) : IntegerValueObject()
 
-abstract class ValueObject<T> {
-    abstract val value: T
-
-    override fun toString(): String = value.toString()
-}
-
 @Table
-data class PersonId(
+data class Person(
     @Id
-    val id: Int?,
+    val id: PersonId?,
     val name: String,
     val age: Age,
 )
@@ -56,13 +44,16 @@ interface PersonRepository : CrudRepository<Person, PersonId>
 
 @RestController
 class PersonController(
-    private val personRepositry: PersonRepository,
+    private val personRepository: PersonRepository,
 ) {
     @GetMapping("/persons", produces = ["application/json"])
-    fun getPersons(): List<Person> = personRepositry.findAll().toList()
+    fun getPersons(): List<Person> = personRepository.findAll().toList()
 
     @PutMapping("/persons", produces = ["application/json"])
     fun putPersons(
         @RequestBody person: Person,
-    ): Person = personRepositry.save(person)
+    ): Person {
+//        val doesNotCompile = Person(person.age, person.name, person.age)
+        return personRepository.save(person)
+    }
 }

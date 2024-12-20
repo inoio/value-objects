@@ -46,13 +46,16 @@ interface PersonRepository : CrudRepository<Person, PersonId>
 
 @RestController
 class PersonController(
-    private val personRepositry: PersonRepository,
+    private val personRepository: PersonRepository,
 ) {
     @GetMapping("/persons", produces = ["application/json"])
-    fun getPersons(): List<Person> = personRepositry.findAll().toList()
+    fun getPersons(): List<Person> = personRepository.findAll().toList()
 
     @PutMapping("/persons", produces = ["application/json"])
     fun putPersons(
         @RequestBody person: Person,
-    ): Person = personRepositry.save(person)
+    ): Person {
+        val i: Int = person.age.value
+        return personRepository.save(person)
+    }
 }

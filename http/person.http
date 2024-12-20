@@ -1,10 +1,8 @@
 ###
 GET http://localhost:8080/persons
-###
-DELETE http://localhost:8080/persons
 
 ###
 PUT http://localhost:8080/persons
 Content-Type: application/json
 
-{"name":"Klaus","age":18}
+{"name":"Klaus","age":17}

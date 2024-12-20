@@ -14,6 +14,18 @@ class DataJdbcConfiguration : AbstractJdbcConfiguration() {
         )
 }
 
+interface ValueObjectInterface<T> {
+    val value: T
+
+    override fun toString(): String = value.toString()
+}
+
+abstract class ValueObject<T> {
+    abstract val value: T
+
+    override fun toString(): String = value.toString()
+}
+
 // spring-data needs Integer instead of Int...
 abstract class IntegerValueObject : ValueObject<Integer>()
 
